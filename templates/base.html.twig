@@ -1,17 +1,41 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="zxx">
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
+
+<!-- Mirrored from template.hasthemes.com/pustok/pustok/index-5.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Dec 2024 11:25:36 GMT -->
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Pustok - Book Store HTML Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: white !important; /* Change from blue to white */
+            color: black; /* Ensure text is readable */
+        }
+    </style>
+     {% block stylesheets %}
+         <!-- Use Minified Plugins Version For Fast Page Load -->
+         <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets/css/plugins.css') }}" />
+         <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets/css/main.css') }}" />
+         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/image/favicon.ico') }}">
+     {% endblock %}
     </head>
+
     <body>
+    {% include 'partials/header.html.twig' %}
+
+    <main>
         {% block body %}{% endblock %}
+    </main>
+
+    {% include 'partials/footer.html.twig' %}
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+        <script src="{{ asset('assets/js/plugins.js') }}"></script>
+        <script src="{{ asset('assets/js/ajax-mail.js') }}"></script>
+        <script src="{{ asset('assets/js/custom.js') }}"></script>
+    {% endblock %}
     </body>
 </html>
