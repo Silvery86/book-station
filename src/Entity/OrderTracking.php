@@ -15,7 +15,7 @@ class OrderTracking
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Order::class)]
-    #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', onDelete: 'CASCADE', onUpdate: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Order $order = null;
 
     #[ORM\Column(length: 255)]

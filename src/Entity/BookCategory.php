@@ -14,11 +14,11 @@ class BookCategory
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Book::class)]
-    #[ORM\JoinColumn(name: 'book_id', referencedColumnName: 'id', onDelete: 'CASCADE', onUpdate: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'book_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Book $book = null;
 
     #[ORM\ManyToOne(targetEntity: Category::class)]
-    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', onDelete: 'CASCADE', onUpdate: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Category $category = null;
 
     public function getId(): ?int

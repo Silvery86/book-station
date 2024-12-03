@@ -15,11 +15,11 @@ class OrderItem
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Order::class)]
-    #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', onDelete: 'CASCADE', onUpdate: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Order $order = null;
 
     #[ORM\ManyToOne(targetEntity: Book::class)]
-    #[ORM\JoinColumn(name: 'book_id', referencedColumnName: 'id', onDelete: 'CASCADE', onUpdate: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'book_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Book $book = null;
 
     #[ORM\Column]
