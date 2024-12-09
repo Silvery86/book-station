@@ -1,0 +1,97 @@
+{% extends '_layouts/auth/main.html.twig' %}
+
+{% block title %}Admin Login{% endblock %}
+
+{% block body %}
+    {% if error %}
+        <div class="alert alert-danger">{{ error.message }}</div>
+    {% endif %}
+    <div class="authentication-wrapper authentication-cover">
+        <!-- Logo -->
+        <a href="#" class="app-brand auth-cover-brand">
+    <span class="app-brand-logo demo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+    <path fill="#B197FC" d="M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16zm16 48l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/>
+</svg>
+</span>
+            <span class="app-brand-text demo text-heading fw-bold">{{ app_name }}</span>
+        </a>
+        <!-- /Logo -->
+        <div class="authentication-inner row m-0">
+            <!-- /Left Text -->
+            <div class="d-none d-lg-flex col-lg-8 p-0">
+                <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
+                    <img src="{{ asset('admin/img/illustrations/auth-login-illustration-light.png') }}" alt="auth-login-cover" class="my-5 auth-illustration" >
+
+                    <img src="{{ asset('admin/img/illustrations/bg-shape-image-light.png') }}" alt="auth-login-cover" class="platform-bg">
+                </div>
+            </div>
+            <!-- /Left Text -->
+
+            <!-- Login -->
+            <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
+                <div class="w-px-400 mx-auto mt-12 pt-5">
+                    <h4 class="mb-1">Welcome to {{ app_name }} 👋</h4>
+                    <p class="mb-6">Please sign-in to your account and start the adventure</p>
+
+                    <form id="formAuthentication" class="mb-6" action="{{ path('admin_login') }}" method="post">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        <div class="mb-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="_username" value="{{ last_username }}" id="email" placeholder="Enter your email" autofocus required>
+                        </div>
+                        <div class="mb-6 form-password-toggle">
+                            <label class="form-label" for="password">Password</label>
+                            <div class="input-group input-group-merge">
+                                <input type="password" id="password" class="form-control" name="_password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+                                <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+                            </div>
+                        </div>
+                        <div class="my-8">
+                            <div class="d-flex justify-content-between">
+                                <div class="form-check mb-0 ms-2">
+                                    <input class="form-check-input" type="checkbox" id="remember-me">
+                                    <label class="form-check-label" for="remember-me">
+                                        Remember Me
+                                    </label>
+                                </div>
+                                <a href="#">
+                                    <p class="mb-0">Forgot Password?</p>
+                                </a>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary d-grid w-100">
+                            Sign in
+                        </button>
+                    </form>
+
+                    <p class="text-center">
+                        <span>New on our platform?</span>
+                        <a href="#">
+                            <span>Create an account</span>
+                        </a>
+                    </p>
+
+                    <div class="divider my-6">
+                        <div class="divider-text">or</div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-facebook me-1_5">
+                            <i class="tf-icons ti ti-brand-facebook-filled"></i>
+                        </a>
+
+                        <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-github me-1_5">
+                            <i class="tf-icons ti ti-brand-github-filled"></i>
+                        </a>
+
+                        <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-google-plus">
+                            <i class="tf-icons ti ti-brand-google-filled"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- /Login -->
+        </div>
+    </div>
+{% endblock %}

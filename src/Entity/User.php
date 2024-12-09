@@ -33,6 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
     public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_MANAGER = 'ROLE_MANAGER';
     public const ROLE_CUSTOMER = 'ROLE_CUSTOMER';
     #[ORM\Column]
     private ?int $status = self::STATUS_INACTIVE;

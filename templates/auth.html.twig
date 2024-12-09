@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+
+<!-- Mirrored from template.hasthemes.com/pustok/pustok/index-5.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Dec 2024 11:25:36 GMT -->
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="description" content="{{ app_name }}">
+    <meta name="keywords" content="{{ app_name }}">
+
+    <title>{% block title %}Welcome{% endblock %}</title>
+    <style>
+        body {
+            background-color: white !important; /* Change from blue to white */
+            color: black; /* Ensure text is readable */
+            text-decoration: none;
+        }
+    </style>
+    {% block stylesheets %}
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('admin/img/favicon/favicon.ico') }}">
+    {% endblock %}
+</head>
+
+<body>
+                {% block body %}{% endblock %}
+
+{% block javascripts %}
+    {% block importmap %}{{ importmap('auth') }}{% endblock %}
+{% endblock %}
+</body>
+</html>

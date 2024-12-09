@@ -21,7 +21,7 @@ class User extends Fixture
         // Create a default admin user
         $admin = new \App\Entity\User();
         $admin->setEmail('admin@gmail.com');
-        $admin->setUsername('admin');
+        $admin->setUsername('admin123');
 
         // Hash the password
         $hashedPassword = $this->passwordHasher->hashPassword($admin, 'admin@123');
