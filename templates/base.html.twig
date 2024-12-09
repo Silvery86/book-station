@@ -6,36 +6,34 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Pustok - Book Store HTML Template</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="{{ app_name }}">
+    <meta name="keywords" content="{{ app_name }}">
+
+    <title>{% block title %}Welcome{% endblock %}</title>
     <style>
         body {
             background-color: white !important; /* Change from blue to white */
             color: black; /* Ensure text is readable */
+            text-decoration: none;
         }
     </style>
      {% block stylesheets %}
-         <!-- Use Minified Plugins Version For Fast Page Load -->
-         <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets/css/plugins.css') }}" />
-         <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets/css/main.css') }}" />
-         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/image/favicon.ico') }}">
+         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/app/image/favicon.ico') }}">
      {% endblock %}
     </head>
 
     <body>
-    {% include 'partials/header.html.twig' %}
+    {% include '_widgets/header.html.twig' %}
 
     <main>
         {% block body %}{% endblock %}
     </main>
 
-    {% include 'partials/footer.html.twig' %}
+    {% include '_widgets/footer.html.twig' %}
 
     {% block javascripts %}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
-        <script src="{{ asset('assets/js/plugins.js') }}"></script>
-        <script src="{{ asset('assets/js/ajax-mail.js') }}"></script>
-        <script src="{{ asset('assets/js/custom.js') }}"></script>
     {% endblock %}
     </body>
 </html>

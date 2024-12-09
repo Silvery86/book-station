@@ -7,10 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`users`')]
-class User
+#[ORM\HasLifecycleCallbacks]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,11 +30,16 @@ class User
     #[ORM\Column(length: 128)]
     private ?string $password = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $roles = null;
-
+    #[ORM\Column(type: Types::JSON)]
+    private array $roles = [];
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_CUSTOMER = 'ROLE_CUSTOMER';
     #[ORM\Column]
-    private ?int $status = 1;
+    private ?int $status = self::STATUS_INACTIVE;
+
+    public const STATUS_ACTIVE = 0;
+    public const STATUS_INACTIVE = 1;
+    public const STATUS_BLOCKED = 2;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastLoginAt = null;
@@ -44,16 +53,16 @@ class User
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rating::class)]
+    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'user')]
     private Collection $rating;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user')]
     private Collection $order;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: WishList::class)]
+    #[ORM\OneToMany(targetEntity: WishList::class, mappedBy: 'user')]
     private Collection $wishlist;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user')]
     private Collection $comments;
 
     public function __construct()
@@ -105,15 +114,18 @@ class User
         return $this;
     }
 
-    public function getRoles(): ?string
+    public function getRoles(): array
     {
-        return $this->roles;
+        if (empty($this->roles)) {
+            $this->roles[] = self::ROLE_CUSTOMER;
+        }
+
+        return array_unique($this->roles);
     }
 
-    public function setRoles(string $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
         return $this;
     }
 
@@ -124,9 +136,26 @@ class User
 
     public function setStatus(int $status): static
     {
+        if (!in_array($status, [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_BLOCKED])) {
+            throw new \InvalidArgumentException('Invalid status value');
+        }
         $this->status = $status;
 
         return $this;
+    }
+
+    public function getStatusLabel(): string
+    {
+        switch ($this->status) {
+            case self::STATUS_ACTIVE:
+                return 'ACTIVE';
+            case self::STATUS_INACTIVE:
+                return 'INACTIVE';
+            case self::STATUS_BLOCKED:
+                return 'BLOCKED';
+            default:
+                return 'UNKNOWN';
+        }
     }
 
     public function getLastLoginAt(): ?\DateTimeInterface
@@ -153,6 +182,18 @@ class User
         return $this;
     }
 
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = $this->createdAt;  // Set updatedAt to createdAt initially
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
+        $this->updatedAt = new \DateTime();
+    }
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -195,5 +236,15 @@ class User
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 }
