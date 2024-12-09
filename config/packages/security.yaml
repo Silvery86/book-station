@@ -7,7 +7,6 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email
     firewalls:
         admin:
             pattern: ^/admin
@@ -21,6 +20,9 @@ security:
                 path: admin_logout
                 target: admin_login
             user_checker: App\Security\UserChecker
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
