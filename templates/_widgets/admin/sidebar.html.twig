@@ -1,80 +1,66 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-    <div class="app-brand demo ">
-        <a href="index.html" class="app-brand-link">
-      <span class="app-brand-logo demo">
- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-    <path fill="#B197FC" d="M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16zm16 48l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/>
-</svg>
-  </span>
-            <span class="app-brand-text demo menu-text fw-bold">{{ app_name }}</span>
-        </a>
+	<div class="app-brand demo ">
+		<a href="{{ path('admin_dashboard') }}" class="app-brand-link">
+			<span class="app-brand-logo demo">
+				<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512">
+					<path fill="#B197FC" d="M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16zm16 48l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/>
+				</svg>
+			</span>
+			<span class="app-brand-text demo menu-text fw-bold">{{ app_name }}</span>
+		</a>
 
-        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
-            <i class="ti menu-toggle-icon d-none d-xl-block align-middle"></i>
-            <i class="ti ti-x d-block d-xl-none ti-md align-middle"></i>
-        </a>
-    </div>
+		<a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+			<i class="ti menu-toggle-icon d-none d-xl-block align-middle"></i>
+			<i class="ti ti-x d-block d-xl-none ti-md align-middle"></i>
+		</a>
+	</div>
 
-    <div class="menu-inner-shadow"></div>
+	<div class="menu-inner-shadow"></div>
 
-    <ul class="menu-inner py-1">
-        <!-- Dashboards -->
-        <li class="menu-item">
-            <a href="#" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ti ti-smart-home"></i>
-                <div data-i18n="Dashboards">Dashboards</div>
-                <div class="badge bg-danger rounded-pill ms-auto">5</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item active">
-                    <a href="index.html" class="menu-link">
-                        <div data-i18n="Analytics">Analytics</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="dashboards-crm.html" class="menu-link">
-                        <div data-i18n="CRM">CRM</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="app-ecommerce-dashboard.html" class="menu-link">
-                        <div data-i18n="eCommerce">eCommerce</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="app-logistics-dashboard.html" class="menu-link">
-                        <div data-i18n="Logistics">Logistics</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="app-academy-dashboard.html" class="menu-link">
-                        <div data-i18n="Academy">Academy</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+	<ul
+		class="menu-inner py-1">
+		<!-- Dashboards -->
+		<li class="menu-item">
+			<a href="#" class="menu-link menu-toggle">
+				<i class="menu-icon tf-icons ti ti-smart-home"></i>
+				<div data-i18n="Dashboards">Dashboards</div>
+				<div class="badge bg-danger rounded-pill ms-auto">5</div>
+			</a>
+			<ul class="menu-sub">
+				<li class="menu-item active">
+					<a href="index.html" class="menu-link">
+						<div data-i18n="Analytics">Analytics</div>
+					</a>
+				</li>
+				<li class="menu-item">
+					<a href="app-ecommerce-dashboard.html" class="menu-link">
+						<div data-i18n="eCommerce">eCommerce</div>
+					</a>
+				</li>
+			</ul>
+		</li>
 
-        <!-- Apps & Pages -->
-        <li class="menu-header small">
-            <span class="menu-header-text" data-i18n="Apps & Pages">Apps &amp; Pages</span>
-        </li>
-        <li class="menu-item">
-            <a href="app-email.html" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-mail"></i>
-                <div data-i18n="Email">Email</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="app-chat.html" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-messages"></i>
-                <div data-i18n="Chat">Chat</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="app-calendar.html" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-calendar"></i>
-                <div data-i18n="Calendar">Calendar</div>
-            </a>
-        </li>
-    </ul>
+		<!-- Apps & Pages -->
+		<li class="menu-header small">
+			<span class="menu-header-text" data-i18n="Apps & Pages">Manager</span>
+		</li>
+		<li class="menu-item">
+			<a href="{{ path('admin_book_index')}}" class="menu-link">
+				<i class="menu-icon tf-icons ti ti-book"></i>
+				<div data-i18n="Book">Book Manager</div>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="app-chat.html" class="menu-link">
+				<i class="menu-icon tf-icons ti ti-messages"></i>
+				<div data-i18n="Chat">Chat</div>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="app-calendar.html" class="menu-link">
+				<i class="menu-icon tf-icons ti ti-calendar"></i>
+				<div data-i18n="Calendar">Calendar</div>
+			</a>
+		</li>
+	</ul>
 </aside>
