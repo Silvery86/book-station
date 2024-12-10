@@ -1,65 +1,71 @@
 {% extends 'admin.html.twig' %}
 
-{% block title %}Book index{% endblock %}
+{% block title %}Book Manager
+{% endblock %}
 
 {% block body %}
-    <h1>Book index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Sku</th>
-                <th>Thumbnail</th>
-                <th>Name</th>
-                <th>Isbn</th>
-                <th>Slug</th>
-                <th>ShortDescription</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>IsSaleOff</th>
-                <th>DiscountType</th>
-                <th>MarkAsFeature</th>
-                <th>Status</th>
-                <th>DiscountValue</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for book in books %}
-            <tr>
-                <td>{{ book.id }}</td>
-                <td>{{ book.sku }}</td>
-                <td>{{ book.thumbnail }}</td>
-                <td>{{ book.name }}</td>
-                <td>{{ book.isbn }}</td>
-                <td>{{ book.slug }}</td>
-                <td>{{ book.shortDescription }}</td>
-                <td>{{ book.description }}</td>
-                <td>{{ book.price }}</td>
-                <td>{{ book.stock }}</td>
-                <td>{{ book.isSaleOff }}</td>
-                <td>{{ book.discountType }}</td>
-                <td>{{ book.markAsFeature }}</td>
-                <td>{{ book.status }}</td>
-                <td>{{ book.discountValue }}</td>
-                <td>{{ book.createdAt ? book.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ book.updatedAt ? book.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('admin_book_show', {'id': book.id}) }}">show</a>
-                    <a href="{{ path('admin_book_edit', {'id': book.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="18">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('admin_book_new') }}">Create new</a>
+    <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="card p-2 px-3 px-md-4">
+                <h5 class="card-header">Books Manager</h5>
+                <div class="card-datatable table-responsive text-nowrap">
+                    <table class="dt-column-search table table-striped" id="booksTable">
+                        <thead>
+                        <tr>
+                            <th>Sku</th>
+                            <th>Thumbnail</th>
+                            <th>Name</th>
+                            <th>Isbn</th>
+                            <th>ShortDescription</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>IsSaleOff</th>
+                            <th>MarkAsFeature</th>
+                            <th>Status</th>
+                            <th>DiscountValue</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                        {% for book in books %}
+                            <tr>
+                                <td>{{ book.sku }}</td>
+                                <td>{{ book.thumbnail }}</td>
+                                <td>{{ book.name }}</td>
+                                <td>{{ book.isbn }}</td>
+                                <td>{{ book.shortDescription }}</td>
+                                <td>{{ book.price }}</td>
+                                <td>{{ book.stock }}</td>
+                                <td>{{ book.isSaleOff }}</td>
+                                <td>{{ book.markAsFeature }}</td>
+                                <td>{{ book.status }}</td>
+                                <td>{{ book.discountValue }}</td>
+                                <td>
+                                    <a href="{{ path('admin_book_show', {'id': book.id}) }}">show</a>
+                                    <a href="{{ path('admin_book_edit', {'id': book.id}) }}">edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="16">No records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $('#booksTable').DataTable({
+            search: {
+                return: true
+            }
+        });
+    </script>
 {% endblock %}

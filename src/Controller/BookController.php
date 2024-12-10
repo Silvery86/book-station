@@ -7,6 +7,7 @@ use App\Form\BookType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,6 +15,24 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin/book')]
 final class BookController extends AbstractController
 {
+    #[Route('/allBooks',name: 'admin_book_dâta', methods: ['GET'])]
+    public function allBooks(BookRepository $bookRepository): JsonResponse
+    {
+        $books = $bookRepository->findAll();
+
+        // Format data for DataTable
+        $data = [];
+        foreach ($books as $book) {
+            $data[] = [
+                'id' => $book->getId(),
+                'title' => $book->getName(),
+                'author' => $book->getShortDescription(),
+                'publishedDate' => $book->getCreatedAt()?->format('Y-m-d'),
+            ];
+        }
+
+        return new JsonResponse(['data' => $data]);
+    }
     #[Route(name: 'admin_book_index', methods: ['GET'])]
     public function index(BookRepository $bookRepository): Response
     {
