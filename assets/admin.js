@@ -15,6 +15,9 @@ import './admin/vendor/libs/perfect-scrollbar/perfect-scrollbar.css'
 import './admin/vendor/libs/typeahead-js/typeahead.css'
 import './admin/vendor/libs/swiper/swiper.css'
 import './admin/vendor/css/pages/cards-advance.css'
+import './admin/vendor/libs/datatables-bs5/datatables.bootstrap5.css'
+import './admin/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css'
+import './admin/vendor/libs/flatpickr/flatpickr.css'
 
 
 import './admin/vendor/js/helpers.js'
@@ -27,4 +30,8 @@ import './admin/vendor/libs/perfect-scrollbar/perfect-scrollbar.js'
 import './admin/vendor/libs/hammer/hammer.js'
 import './admin/vendor/libs/typeahead-js/typeahead.js'
 import './admin/vendor/js/menu.js'
-import './admin/js/main.js'
+import './admin/vendor/libs/datatables-bs5/datatables-bootstrap5.js'
+import './admin/datatable/datatables.js'
+import './admin/vendor/libs/moment/moment.js'
+
+
