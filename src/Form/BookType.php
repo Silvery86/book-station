@@ -4,8 +4,11 @@ namespace App\Form;
 
 use App\Entity\Book;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class BookType extends AbstractType
 {
@@ -13,7 +16,6 @@ class BookType extends AbstractType
     {
         $builder
             ->add('sku')
-            ->add('thumbnail')
             ->add('name')
             ->add('isbn')
             ->add('slug')
@@ -26,13 +28,22 @@ class BookType extends AbstractType
             ->add('markAsFeature')
             ->add('status')
             ->add('discountValue')
-            ->add('createdAt', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('updatedAt', null, [
-                'widget' => 'single_text',
-            ])
-        ;
+            ->add('thumbnail', FileType::class, [
+                'label' => 'Thumbnail (Image File)',
+                'mapped' => false, // This ensures it’s not persisted automatically
+                'required' => true, // Allow optional upload
+                'constraints' => [
+                    new File([
+                        'maxSize' => '5M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid image file (JPEG, PNG, GIF)',
+                    ]),
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

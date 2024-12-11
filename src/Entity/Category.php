@@ -15,8 +15,12 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $parentId = null;
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    private ?Category $parentId = null;
+
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parentId')]
+    private Collection $children;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -24,12 +28,17 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: BookCategory::class)]
-    private Collection $bookCategories;
+    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'categories')]
+    private Collection $books;
 
+    public function __toString(): string
+    {
+        return $this->name ?? 'N/A'; // Provide a fallback if name is null
+    }
     public function __construct()
     {
-        $this->bookCategories = new ArrayCollection();
+        $this->children = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }  
 
     public function getId(): ?int
@@ -37,14 +46,40 @@ class Category
         return $this->id;
     }
 
-    public function getParentId(): ?int
+    public function getParentId(): ?Category
     {
         return $this->parentId;
     }
 
-    public function setParentId(?int $parentId): static
+    public function setParentId(?Category $parentId): static
     {
         $this->parentId = $parentId;
+
+        return $this;
+    }
+
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    public function addChild(Category $child): self
+    {
+        if (!$this->children->contains($child)) {
+            $this->children->add($child);
+            $child->setParentId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChild(Category $child): self
+    {
+        if ($this->children->removeElement($child)) {
+            if ($child->getParentId() === $this) {
+                $child->setParentId(null);
+            }
+        }
 
         return $this;
     }
@@ -73,14 +108,26 @@ class Category
         return $this;
     }
 
-    public function getBookCategories(): Collection
+    public function getBooks(): Collection
     {
-        return $this->bookCategories;
+        return $this->books;
+    }
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books->add($book);
+            $book->addCategory($this); // Ensure bidirectional synchronization
+        }
+
+        return $this;
     }
 
-    public function setBookCategories(Collection $bookCategories): self
+    public function removeBook(Book $book): self
     {
-        $this->bookCategories = $bookCategories;
+        if ($this->books->removeElement($book)) {
+            $book->removeCategory($this); // Ensure bidirectional synchronization
+        }
+
         return $this;
     }
 }

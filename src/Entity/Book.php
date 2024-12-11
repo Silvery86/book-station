@@ -65,35 +65,38 @@ class Book
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookCategory::class)]
-    private Collection $bookCategories;
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'books')]
+    #[ORM\JoinTable(name: 'book_category')]
+    private Collection $categories;
 
-    #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookAuthor::class)]
-    private Collection $bookAuthors;
+    #[ORM\ManyToMany(targetEntity: Author::class, inversedBy: 'books')]
+    #[ORM\JoinTable(name: 'book_author')]
+    private Collection $authors;
 
-    #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookTag::class)]
-    private Collection $bookTags;
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'books')]
+    #[ORM\JoinTable(name: 'book_tag')]
+    private Collection $tags;
 
-    #[ORM\OneToMany(mappedBy: 'book', targetEntity: RelatedBook::class)]
+    #[ORM\OneToMany(targetEntity: RelatedBook::class, mappedBy: 'book')]
     private Collection $relatedBooks;
 
-    #[ORM\OneToMany(mappedBy: 'book', targetEntity: Rating::class)]
+    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'book')]
     private Collection $rating;
 
-    #[ORM\OneToMany(mappedBy: 'book', targetEntity: OrderItem::class)]
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'book')]
     private Collection $orderItems;
 
-    #[ORM\OneToMany(mappedBy: 'book', targetEntity: WishList::class)]
+    #[ORM\OneToMany(targetEntity: WishList::class, mappedBy: 'book')]
     private Collection $wishlist;
 
-    #[ORM\OneToMany(mappedBy: 'book', targetEntity: Comment::class)]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'book')]
     private Collection $comments;
 
     public function __construct()
     {
-        $this->bookCategories = new ArrayCollection();
-        $this->bookAuthors = new ArrayCollection();
-        $this->bookTags = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+        $this->authors = new ArrayCollection();
+        $this->tags = new ArrayCollection();
         $this->relatedBooks = new ArrayCollection();
         $this->rating = new ArrayCollection();
         $this->orderItems = new ArrayCollection();
@@ -276,6 +279,19 @@ class Book
         return $this;
     }
 
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = $this->createdAt;  // Set updatedAt to createdAt initially
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
+        $this->updatedAt = new \DateTime();
+    }
+
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -300,24 +316,103 @@ class Book
         return $this;
     }
 
-    public function getBookCategories(): Collection
+    public function getCategories(): Collection
     {
-        return $this->bookCategories;
+        return $this->categories;
     }
 
-    public function getBookAuthors(): Collection
+    public function addCategory(Category $category): self
     {
-        return $this->bookAuthors;
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->addBook($this);
+        }
+
+        return $this;
     }
 
-    public function getBookTags(): Collection
+    public function removeCategory(Category $category): self
     {
-        return $this->bookTags;
+        if ($this->categories->removeElement($category)) {
+            $category->removeBook($this);
+        }
+
+        return $this;
+    }
+
+    public function getAuthors(): Collection
+    {
+        return $this->authors;
+    }
+
+    public function addAuthor(Author $author): self
+    {
+        if (!$this->authors->contains($author)) {
+            $this->authors->add($author);
+            $author->addBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAuthor(Author $author): self
+    {
+        if ($this->authors->removeElement($author)) {
+            $author->removeBook($this);
+        }
+
+        return $this;
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+            $tag->addBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->removeElement($tag)) {
+            $tag->removeBook($this);
+        }
+
+        return $this;
     }
 
     public function getRelatedBooks(): Collection
     {
         return $this->relatedBooks;
+    }
+
+    public function addRelatedBook(RelatedBook $relatedBook): self
+    {
+        if (!$this->relatedBooks->contains($relatedBook)) {
+            $this->relatedBooks->add($relatedBook);
+            $relatedBook->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelatedBook(RelatedBook $relatedBook): self
+    {
+        if ($this->relatedBooks->removeElement($relatedBook)) {
+            // Set the owning side to null (unless already changed)
+            if ($relatedBook->getBook() === $this) {
+                $relatedBook->setBook(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getRating(): Collection

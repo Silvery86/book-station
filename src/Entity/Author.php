@@ -25,12 +25,12 @@ class Author
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: BookAuthor::class)]
-    private Collection $bookAuthors;
+    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'authors')]
+    private Collection $books;
     
     public function __construct()
     {      
-        $this->bookAuthors = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }  
 
     public function getId(): ?int
@@ -74,14 +74,27 @@ class Author
         return $this;
     }
 
-    public function getBookAuthors(): Collection
+    public function getBooks(): Collection
     {
-        return $this->bookAuthors;
+        return $this->books;
     }
 
-    public function setBookAuthors(Collection $bookAuthors): self
+    public function addBook(Book $book): self
     {
-        $this->bookAuthors = $bookAuthors;
+        if (!$this->books->contains($book)) {
+            $this->books->add($book);
+            $book->addAuthor($this); // Ensure bidirectional synchronization
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            $book->removeAuthor($this); // Ensure bidirectional synchronization
+        }
+
         return $this;
     }
 }

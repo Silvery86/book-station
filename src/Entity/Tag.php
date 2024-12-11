@@ -21,12 +21,12 @@ class Tag
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'tag', targetEntity: BookTag::class)]
-    private Collection $bookTags;
+    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'tags')]
+    private Collection $books;
 
     public function __construct()
     {
-        $this->bookTags = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }  
 
     public function getId(): ?int
@@ -58,14 +58,27 @@ class Tag
         return $this;
     }
 
-    public function getBookTags(): Collection
+    public function getBooks(): Collection
     {
-        return $this->bookTags;
+        return $this->books;
     }
 
-    public function setBookTags(Collection $bookTags): self
+    public function addBook(Book $book): self
     {
-        $this->bookTags = $bookTags;
+        if (!$this->books->contains($book)) {
+            $this->books->add($book);
+            $book->addTag($this); // Ensure bidirectional synchronization
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            $book->removeTag($this); // Ensure bidirectional synchronization
+        }
+
         return $this;
     }
 }
