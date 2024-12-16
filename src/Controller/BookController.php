@@ -21,7 +21,6 @@ final class BookController extends AbstractController
     #[Route(name: 'admin_book_index', methods: ['GET'])]
     public function index(BookRepository $bookRepository): Response
     {
-        dd($bookRepository->findAll());
         return $this->render('admin/book/index.html.twig', [
             'books' => $bookRepository->findAll(),
         ]);
@@ -45,7 +44,7 @@ final class BookController extends AbstractController
                 // Move the file to the directory where images are stored
                 try {
                     $thumbnailFile->move(
-                        $this->getParameter('images_directory'), // Ensure you configure this parameter
+                        $this->getParameter('images_upload_directory'), // Ensure you configure this parameter
                         $newFilename
                     );
                     $data->setThumbnail($newFilename); // Set the new filename in the entity
@@ -83,15 +82,37 @@ final class BookController extends AbstractController
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+        $currentThumbnail = $book->getThumbnail();
 
+        // If the form is submitted and valid
+        if ($form->isSubmitted() && $form->isValid()) {
+            $thumbnailFile = $form->get('thumbnail')->getData();
+
+            if ($thumbnailFile) {
+                $newFilename = uniqid().'.'.$thumbnailFile->guessExtension();
+                try {
+                    $thumbnailFile->move(
+                        $this->getParameter('uploads_directory'), // Path to your uploads directory
+                        $newFilename
+                    );
+                    $book->setThumbnail($newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'There was an error uploading the file.');
+                }
+            } elseif ($currentThumbnail) {
+                $book->setThumbnail($currentThumbnail);
+            }
+
+
+            $entityManager->flush();
             return $this->redirectToRoute('admin_book_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        // Render the edit page with the form and current book data
         return $this->render('admin/book/edit.html.twig', [
             'book' => $book,
-            'form' => $form,
+            'form' => $form->createView(),
+            'current_thumbnail' => $currentThumbnail, // Pass the current thumbnail to the template
         ]);
     }
 
