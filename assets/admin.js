@@ -30,8 +30,10 @@ import './admin/vendor/libs/perfect-scrollbar/perfect-scrollbar.js'
 import './admin/vendor/libs/hammer/hammer.js'
 import './admin/vendor/libs/typeahead-js/typeahead.js'
 import './admin/vendor/js/menu.js'
-import './admin/vendor/libs/datatables-bs5/datatables-bootstrap5.js'
+import './admin/js/main.js'
 import './admin/datatable/datatables.js'
 import './admin/vendor/libs/moment/moment.js'
+import './admin/jquery/jquery-3.6.0.min.js'
+import './admin/jquery/jquery.dataTables.min.js'
 
 
