@@ -39,28 +39,26 @@
 				</li>
 			</ul>
 		</li>
-
-		<!-- Apps & Pages -->
 		<li class="menu-header small">
-			<span class="menu-header-text" data-i18n="Apps & Pages">Manager</span>
+			<span class="menu-header-text" >Manager</span>
 		</li>
 		<li class="menu-item">
-			<a href="{{ path('admin_book_index')}}" class="menu-link">
+			<a href="#" class="menu-link menu-toggle">
 				<i class="menu-icon tf-icons ti ti-book"></i>
-				<div data-i18n="Book">Book Manager</div>
+				<div data-i18n="Dashboards">Book Manager</div>
 			</a>
-		</li>
-		<li class="menu-item">
-			<a href="app-chat.html" class="menu-link">
-				<i class="menu-icon tf-icons ti ti-messages"></i>
-				<div data-i18n="Chat">Chat</div>
-			</a>
-		</li>
-		<li class="menu-item">
-			<a href="app-calendar.html" class="menu-link">
-				<i class="menu-icon tf-icons ti ti-calendar"></i>
-				<div data-i18n="Calendar">Calendar</div>
-			</a>
+			<ul class="menu-sub">
+				<li class="menu-item active">
+					<a href="{{ path('admin_book_index')}}" class="menu-link">
+						<div>Books</div>
+					</a>
+				</li>
+				<li class="menu-item">
+					<a href="{{ path('admin_category_index') }}" class="menu-link">
+						<div>Categories</div>
+					</a>
+				</li>
+			</ul>
 		</li>
 	</ul>
 </aside>
