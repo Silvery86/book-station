@@ -3,9 +3,57 @@
 {% block title %}New Book{% endblock %}
 
 {% block body %}
-    <h1>Create new Book</h1>
 
-    {{ include('admin/book/_form.html.twig') }}
+    <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <h1>Create new Book</h1>
+            {{ include('admin/book/_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Get the category name input and slug input elements
+            const $nameInput = $('#book_name');
+            const $slugInput = $('#book_slug');
+            // Function to generate slug from category name
+            function generateSlug(name) {
+                return name
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^a-zA-Z0-9]+/g, '-');
+            }
 
-    <a href="{{ path('admin_book_index') }}">back to list</a>
+            // Event listener for when the user types in the name input
+            $nameInput.on('input', function () {
+                const slug = generateSlug($nameInput.val());
+                $slugInput.val(slug);
+            });
+
+            // Function when select isSaleOff options
+            const $isSaleOff = $('#{{ form.isSaleOff.vars.id }}');
+            const $discountType = $('#{{ form.discountType.vars.id }}');
+            const $discountValue = $('#{{ form.discountValue.vars.id }}');
+
+            function toggleFields() {
+                if ($isSaleOff.val() === '0') { // If "No"
+                    $discountType.prop('disabled', true).val('0'); // Set to "None"
+                    $discountValue.prop('disabled', true).val('0'); // Set to 0
+                } else { // If "Yes"
+                    $discountType.prop('disabled', false);
+                    $discountValue.prop('disabled', false);
+                }
+            }
+
+            // Initial toggle on page load
+            toggleFields();
+
+            // Toggle fields on change
+            $isSaleOff.on('change', toggleFields);
+        });
+    </script>
+
 {% endblock %}

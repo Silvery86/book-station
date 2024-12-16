@@ -4,7 +4,13 @@
 
 {% block body %}
     <h1>Edit Book</h1>
+
+    {# Display current image if it exists #}
+    {% if current_thumbnail is not empty %}
+        <div class="current-image">
+            <img src="{{ asset('admin/uploads/images/' ~ current_thumbnail) }}" alt="Current Thumbnail" style="max-width: 150px; max-height: 150px;">
+        </div>
+    {% endif %}
     {{ include('admin/book/_form.html.twig', {'button_label': 'Update'}) }}
-    <a href="{{ path('admin_book_index') }}">back to list</a>
     {{ include('admin/book/_delete_form.html.twig') }}
 {% endblock %}
