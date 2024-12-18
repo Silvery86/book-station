@@ -34,7 +34,7 @@
                                 <td>{{ book.sku }}</td>
                                 <td>{{ book.isbn }}</td>
                                 <td>  {% if book.thumbnail %}
-                                        <img src="{{ asset('admin/uploads/images/' ~ book.thumbnail) }}" alt="Book Thumbnail" style="max-width: 150px; max-height: 150px;" />
+                                        <img src="{{ asset('admin/uploads/images/' ~ book.thumbnail) }}" alt="Book Thumbnail" style="width: 100px; height: 100px;" />
                                     {% else %}
                                         <span>No thumbnail available</span>
                                     {% endif %}

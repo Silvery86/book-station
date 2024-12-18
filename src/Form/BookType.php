@@ -6,11 +6,10 @@ use App\Entity\Book;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
@@ -19,14 +18,10 @@ class BookType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('sku')
-            ->add('isbn')
-            ->add('name')
-            ->add('slug')
             ->add('thumbnail', FileType::class, [
                 'label' => 'Thumbnail (Image File)',
-                'mapped' => false, // This ensures it’s not persisted automatically
-                'required' => true, // Allow optional upload
+                'mapped' => false, // Not automatically persisted
+                'required' => false, // Allow optional upload
                 'constraints' => [
                     new File([
                         'maxSize' => '5M',
@@ -39,6 +34,10 @@ class BookType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('sku')
+            ->add('isbn')
+            ->add('name')
+            ->add('slug')
             ->add('shortDescription')
             ->add('description')
             ->add('price', NumberType::class, [
@@ -83,8 +82,7 @@ class BookType extends AbstractType
                 ],
                 'expanded' => false, // Render as dropdown
                 'multiple' => false,
-            ])
-         ;
+            ]);
 
     }
 

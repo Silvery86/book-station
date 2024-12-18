@@ -32,27 +32,8 @@ final class BookController extends AbstractController
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $thumbnailFile = $form->get('thumbnail')->getData();
-            if ($thumbnailFile) {
-                $originalFilename = pathinfo($thumbnailFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = sprintf('%s_%s.%s', time(), $safeFilename, $thumbnailFile->guessExtension());
-
-                // Move the file to the directory where images are stored
-                try {
-                    $thumbnailFile->move(
-                        $this->getParameter('images_upload_directory'), // Ensure you configure this parameter
-                        $newFilename
-                    );
-                    $data->setThumbnail($newFilename); // Set the new filename in the entity
-                } catch (FileException $e) {
-                    // Handle file upload error
-                    $this->addFlash('error', 'File upload failed.');
-                }
-            }
+            $this->uploadImages($form, $slugger);
 
             $entityManager->persist($book);
             $entityManager->flush();
@@ -77,7 +58,7 @@ final class BookController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'admin_book_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Book $book, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Book $book, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -86,44 +67,58 @@ final class BookController extends AbstractController
 
         // If the form is submitted and valid
         if ($form->isSubmitted() && $form->isValid()) {
-            $thumbnailFile = $form->get('thumbnail')->getData();
+            $this->uploadImages($form, $slugger);
 
-            if ($thumbnailFile) {
-                $newFilename = uniqid().'.'.$thumbnailFile->guessExtension();
-                try {
-                    $thumbnailFile->move(
-                        $this->getParameter('uploads_directory'), // Path to your uploads directory
-                        $newFilename
-                    );
-                    $book->setThumbnail($newFilename);
-                } catch (FileException $e) {
-                    $this->addFlash('error', 'There was an error uploading the file.');
-                }
-            } elseif ($currentThumbnail) {
-                $book->setThumbnail($currentThumbnail);
-            }
-
-
+            $entityManager->persist($book);
             $entityManager->flush();
             return $this->redirectToRoute('admin_book_index', [], Response::HTTP_SEE_OTHER);
         }
-
+        $uploadedImages = scandir($this->getParameter('images_upload_directory'));
+        $uploadedImages = array_diff($uploadedImages, ['.', '..']); // Remove special directories
         // Render the edit page with the form and current book data
         return $this->render('admin/book/edit.html.twig', [
             'book' => $book,
             'form' => $form->createView(),
-            'current_thumbnail' => $currentThumbnail, // Pass the current thumbnail to the template
+            'uploaded_images' => $uploadedImages,
         ]);
     }
 
     #[Route('/{id}', name: 'admin_book_delete', methods: ['POST'])]
     public function delete(Request $request, Book $book, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $book->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($book);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('admin_book_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormInterface $form
+     * @param SluggerInterface $slugger
+     * @return void
+     */
+    public function uploadImages(\Symfony\Component\Form\FormInterface $form, SluggerInterface $slugger): void
+    {
+        $data = $form->getData();
+        $thumbnailFile = $form->get('thumbnail')->getData();
+        if ($thumbnailFile) {
+            $originalFilename = pathinfo($thumbnailFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = sprintf('%s_%s.%s', time(), $safeFilename, $thumbnailFile->guessExtension());
+
+            // Move the file to the directory where images are stored
+            try {
+                $thumbnailFile->move(
+                    $this->getParameter('images_upload_directory'), // Ensure you configure this parameter
+                    $newFilename
+                );
+                $data->setThumbnail($newFilename); // Set the new filename in the entity
+            } catch (FileException $e) {
+                // Handle file upload error
+                $this->addFlash('error', 'File upload failed.');
+            }
+        }
     }
 }
