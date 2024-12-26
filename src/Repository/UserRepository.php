@@ -13,7 +13,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     {
         parent::__construct($registry, User::class); // Pass User::class here
     }
-    public function loadUserByIdentifier(string $usernameOrEmail): ?User
+    public function loadUserByIdentifier(string $identifier): ?User
     {
         $entityManager = $this->getEntityManager();
 
@@ -23,7 +23,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
                 WHERE u.username = :query
                 OR u.email = :query'
         )
-            ->setParameter('query', $usernameOrEmail)
+            ->setParameter('query', $identifier)
             ->getOneOrNullResult();
     }
 }

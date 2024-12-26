@@ -6,6 +6,7 @@ use App\Repository\RelatedBookRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RelatedBookRepository::class)]
+#[ORM\Table(name: 'related_books')]
 class RelatedBook
 {
     #[ORM\Id]

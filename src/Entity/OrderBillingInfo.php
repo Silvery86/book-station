@@ -6,6 +6,7 @@ use App\Repository\OrderBillingInfoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderBillingInfoRepository::class)]
+#[ORM\Table(name: 'order_billing_info')]
 class OrderBillingInfo
 {
     #[ORM\Id]
