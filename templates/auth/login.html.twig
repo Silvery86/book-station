@@ -3,9 +3,7 @@
 {% block title %}Admin Login{% endblock %}
 
 {% block body %}
-    {% if error %}
-        <div class="alert alert-danger">{{ error.message }}</div>
-    {% endif %}
+
     <div class="authentication-wrapper authentication-cover">
         <!-- Logo -->
         <a href="#" class="app-brand auth-cover-brand">
@@ -27,21 +25,24 @@
                 </div>
             </div>
             <!-- /Left Text -->
-
             <!-- Login -->
             <div class="d-flex col-12 col-lg-4 align-items-center authentication-bg p-sm-12 p-6">
                 <div class="w-px-400 mx-auto mt-12 pt-5">
-                    <h4 class="mb-1">Welcome to {{ app_name }} 👋</h4>
-                    <p class="mb-6">Please sign-in to your account and start the adventure</p>
-
+                    <h4 class="mb-1">{{ app_name }} Xin chào 👋</h4>
+                    <p class="mb-6">Vui lòng đăng nhập tài khoản</p>
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            <strong>Lỗi!</strong> {{ error }}
+                        </div>
+                    {% endif %}
                     <form id="formAuthentication" class="mb-6" action="{{ path('admin_login') }}" method="post">
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                         <div class="mb-6">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" name="_username" value="{{ last_username }}" id="email" placeholder="Enter your email" autofocus required>
+                            <label for="email" class="form-label">Tài khoản hoặc email</label>
+                            <input type="text" class="form-control" name="_username" id="email" placeholder="Tài khoản của bạn" autofocus required>
                         </div>
                         <div class="mb-6 form-password-toggle">
-                            <label class="form-label" for="password">Password</label>
+                            <label class="form-label" for="password">Mật khẩu</label>
                             <div class="input-group input-group-merge">
                                 <input type="password" id="password" class="form-control" name="_password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
                                 <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
@@ -52,11 +53,11 @@
                                 <div class="form-check mb-0 ms-2">
                                     <input class="form-check-input" type="checkbox" id="remember-me" name="_remember_me">
                                     <label class="form-check-label" for="remember-me">
-                                        Remember Me
+                                        Ghi nhớ tài khoản
                                     </label>
                                 </div>
                                 <a href="#">
-                                    <p class="mb-0">Forgot Password?</p>
+                                    <p class="mb-0">Quên mật khẩu?</p>
                                 </a>
                             </div>
                         </div>
@@ -66,29 +67,29 @@
                     </form>
 
                     <p class="text-center">
-                        <span>New on our platform?</span>
+                        <span>Chưa có tài khoản ?</span>
                         <a href="#">
-                            <span>Create an account</span>
+                            <span>Tạo tài khoản</span>
                         </a>
                     </p>
 
-                    <div class="divider my-6">
-                        <div class="divider-text">or</div>
-                    </div>
+{#                    <div class="divider my-6">#}
+{#                        <div class="divider-text">or</div>#}
+{#                    </div>#}
 
-                    <div class="d-flex justify-content-center">
-                        <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-facebook me-1_5">
-                            <i class="tf-icons ti ti-brand-facebook-filled"></i>
-                        </a>
+{#                    <div class="d-flex justify-content-center">#}
+{#                        <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-facebook me-1_5">#}
+{#                            <i class="tf-icons ti ti-brand-facebook-filled"></i>#}
+{#                        </a>#}
 
-                        <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-github me-1_5">
-                            <i class="tf-icons ti ti-brand-github-filled"></i>
-                        </a>
+{#                        <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-github me-1_5">#}
+{#                            <i class="tf-icons ti ti-brand-github-filled"></i>#}
+{#                        </a>#}
 
-                        <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-google-plus">
-                            <i class="tf-icons ti ti-brand-google-filled"></i>
-                        </a>
-                    </div>
+{#                        <a href="javascript:;" class="btn btn-sm btn-icon rounded-pill btn-text-google-plus">#}
+{#                            <i class="tf-icons ti ti-brand-google-filled"></i>#}
+{#                        </a>#}
+{#                    </div>#}
                 </div>
             </div>
             <!-- /Login -->
