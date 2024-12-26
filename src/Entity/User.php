@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -12,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`users`')]
+#[ORM\Table(name: 'users`')]
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -32,15 +33,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
-    public const ROLE_ADMIN = 'ROLE_ADMIN';
-    public const ROLE_MANAGER = 'ROLE_MANAGER';
-    public const ROLE_CUSTOMER = 'ROLE_CUSTOMER';
-    #[ORM\Column]
+    final public const string ROLE_ADMIN = 'ROLE_ADMIN';
+    final public const string ROLE_MANAGER = 'ROLE_MANAGER';
+    final public const string ROLE_CUSTOMER = 'ROLE_CUSTOMER';
+    final public const array ROLE = [
+        self::ROLE_ADMIN => 'Admin',
+        self::ROLE_MANAGER => 'Manager',
+        self::ROLE_CUSTOMER => 'Customer'
+    ];
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $status = self::STATUS_INACTIVE;
 
-    public const STATUS_ACTIVE = 0;
-    public const STATUS_INACTIVE = 1;
-    public const STATUS_BLOCKED = 2;
+    final public const int STATUS_ACTIVE = 0;
+    final public const int STATUS_INACTIVE = 1;
+    final public const int STATUS_BLOCKED = 2;
+
+    final public const array STATUS = [
+        self::STATUS_ACTIVE => 'Active',
+        self::STATUS_INACTIVE => 'Inactive',
+        self::STATUS_BLOCKED => 'Blocked'
+    ];
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastLoginAt = null;

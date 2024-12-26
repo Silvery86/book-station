@@ -27,7 +27,6 @@ class UserChecker implements UserCheckerInterface
             throw new CustomUserMessageAccountStatusException('Your account is not active.');
         }
 
-
         $allowedRoles = [
             User::ROLE_ADMIN,
             User::ROLE_MANAGER,
