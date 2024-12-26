@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -10,7 +11,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
@@ -84,7 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->order = new ArrayCollection();
         $this->wishlist = new ArrayCollection();
         $this->comments = new ArrayCollection();
-    }  
+    }
 
     public function getId(): ?int
     {

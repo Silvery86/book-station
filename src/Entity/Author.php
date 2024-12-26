@@ -28,11 +28,11 @@ class Author
 
     #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'authors')]
     private Collection $books;
-    
+
     public function __construct()
-    {      
+    {
         $this->books = new ArrayCollection();
-    }  
+    }
 
     public function getId(): ?int
     {

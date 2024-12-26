@@ -20,12 +20,12 @@ class PasswordResetToken
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $createdAt = null;
 
-   
+
 
     public function getEmail(): ?string
     {
         return $this->email;
-    } 
+    }
 
     public function getToken(): ?string
     {

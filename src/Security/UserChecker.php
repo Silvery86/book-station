@@ -23,18 +23,22 @@ class UserChecker implements UserCheckerInterface
         }
 
 
-        if ($user->getStatus() !== User::STATUS_ACTIVE) {
-            throw new CustomUserMessageAccountStatusException('Your account is not active.');
+        if ($user->getStatus() === User::STATUS_INACTIVE) {
+            throw new CustomUserMessageAccountStatusException('Tài khoản chưa được kích hoạt');
+        }
+        if ($user->getStatus() === User::STATUS_BLOCKED) {
+            throw new CustomUserMessageAccountStatusException('Tài khoản của bạn đã bị khóa.');
         }
 
         $allowedRoles = [
             User::ROLE_ADMIN,
             User::ROLE_MANAGER,
+            User::ROLE_CUSTOMER
         ];
 
         $hasAllowedRole = array_intersect($allowedRoles, $user->getRoles());
         if (empty($hasAllowedRole)) {
-            throw new CustomUserMessageAccountStatusException('You do not have the required role to log in.');
+            throw new CustomUserMessageAccountStatusException('Lỗi khi đăng nhâp');
         }
     }
 

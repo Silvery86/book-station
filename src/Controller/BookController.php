@@ -8,7 +8,6 @@ use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,7 +16,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('/admin/book')]
 final class BookController extends AbstractController
 {
-
     #[Route(name: 'admin_book_index', methods: ['GET'])]
     public function index(BookRepository $bookRepository): Response
     {
@@ -95,8 +93,8 @@ final class BookController extends AbstractController
     }
 
     /**
-     * @param \Symfony\Component\Form\FormInterface $form
-     * @param SluggerInterface $slugger
+     * @param  \Symfony\Component\Form\FormInterface $form
+     * @param  SluggerInterface                      $slugger
      * @return void
      */
     public function uploadImages(\Symfony\Component\Form\FormInterface $form, SluggerInterface $slugger): void

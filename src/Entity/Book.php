@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ORM\Table(name: '`books')]
 #[ORM\HasLifecycleCallbacks]
@@ -106,7 +105,7 @@ class Book
         $this->comments = new ArrayCollection();
         $this->price = '0';
         $this->discountValue = '0';
-    }  
+    }
 
     public function getId(): ?int
     {
@@ -436,5 +435,5 @@ class Book
     {
         return $this->comments;
     }
-  
+
 }

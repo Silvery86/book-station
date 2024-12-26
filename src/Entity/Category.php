@@ -40,7 +40,7 @@ class Category
     {
         $this->children = new ArrayCollection();
         $this->books = new ArrayCollection();
-    }  
+    }
 
     public function getId(): ?int
     {

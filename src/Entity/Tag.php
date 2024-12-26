@@ -28,7 +28,7 @@ class Tag
     public function __construct()
     {
         $this->books = new ArrayCollection();
-    }  
+    }
 
     public function getId(): ?int
     {

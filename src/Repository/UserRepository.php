@@ -6,6 +6,7 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 class UserRepository extends ServiceEntityRepository implements UserLoaderInterface
 {
@@ -16,8 +17,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     public function loadUserByIdentifier(string $identifier): ?User
     {
         $entityManager = $this->getEntityManager();
-
-        return $entityManager->createQuery(
+        $user = $entityManager->createQuery(
             'SELECT u
                 FROM App\Entity\User u
                 WHERE u.username = :query
@@ -25,5 +25,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         )
             ->setParameter('query', $identifier)
             ->getOneOrNullResult();
+        if (!$user) {
+            throw new BadCredentialsException('Tài khoản không tồn tại !');
+        }
+        return $user;
     }
 }

@@ -39,7 +39,7 @@ class Order
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
-    
+
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderBillingInfo::class)]
     private Collection $orderBillingInfo;
 
@@ -49,12 +49,13 @@ class Order
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderTracking::class)]
     private Collection $orderTrackings;
 
-    public function __construct()    {
-        
+    public function __construct()
+    {
+
         $this->orderBillingInfo = new ArrayCollection();
         $this->orderItems = new ArrayCollection();
         $this->orderTrackings = new ArrayCollection();
-    }  
+    }
 
     public function getId(): ?int
     {
@@ -144,7 +145,7 @@ class Order
 
         return $this;
     }
-    
+
     public function getOrderBillingInfo(): Collection
     {
         return $this->orderBillingInfo;
