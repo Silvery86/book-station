@@ -1,0 +1,39 @@
+{{ form_start(form, { 'attr': { 'class': 'custom-form' } }) }}
+<div class="d-flex flex-wrap justify-content-between align-items-center">
+    {% for field in form %}
+        {% if field.vars.name != '_token' %}
+            {% if field.vars.name in ['thumbnail']%}
+                {% if  book.thumbnail is not empty %}
+                <div class="thumbnail-preview mb-2">
+                        <img src="{{ asset('admin/uploads/images/' ~  book.thumbnail) }}" alt="Thumbnail" class="img-thumbnail" style="max-height: 150px;">
+                </div>
+                {% endif %}
+                <div class="col-md-12 form-group p-2"> {# Special handling for thumbnail #}
+                    {{ form_label(field, null, { 'label_attr': { 'class': 'form-label' } }) }}
+                    {{ form_widget(field, { 'attr': { 'class': 'form-control' } }) }}
+                    {{ form_errors(field) }}
+                </div>
+
+            {% elseif field.vars.name in ['name', 'info', 'slug'] %}
+                <div class="col-md-12 form-group p-2">  {# Single column for these fields #}
+                    {{ form_label(field, null, { 'label_attr': { 'class': 'form-label' } }) }}
+                    {{ form_widget(field, { 'attr': { 'class': 'form-control' } }) }}
+                    {{ form_errors(field) }}
+                </div>
+            {% else %}
+                <div class="col-md-6 form-group p-2">  {# Two columns for others #}
+                    {{ form_label(field, null, { 'label_attr': { 'class': 'form-label' } }) }}
+                    {{ form_widget(field, { 'attr': { 'class': 'form-control' } }) }}
+                    {{ form_errors(field) }}
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</div>
+<div class="d-flex justify-content-start mt-3 align-items-center">
+    <a class="btn btn-primary mr-2" href="{{ path('admin_author_index') }}"><i
+                class="fa-solid fa-square-caret-left me-2"></i>Back To List</a>
+    <button class="btn btn-success mx-2"><i
+                class="fa-regular fa-floppy-disk me-2"></i>{{ button_label|default('Create') }}</button>
+</div>
+{{ form_end(form) }}

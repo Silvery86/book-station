@@ -13,10 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/admin/book')]
+#[Route('/admin/book', name:'admin_book_')]
 final class BookController extends AbstractController
 {
-    #[Route(name: 'admin_book_index', methods: ['GET'])]
+    #[Route(name: 'index', methods: ['GET'])]
     public function index(BookRepository $bookRepository): Response
     {
         return $this->render('admin/book/index.html.twig', [
@@ -24,7 +24,7 @@ final class BookController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'admin_book_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $book = new Book();
@@ -47,7 +47,7 @@ final class BookController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_book_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
     public function show(Book $book): Response
     {
         return $this->render('admin/book/show.html.twig', [
@@ -55,7 +55,7 @@ final class BookController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'admin_book_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Book $book, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(BookType::class, $book);
@@ -81,7 +81,7 @@ final class BookController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'admin_book_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'delete', methods: ['POST'])]
     public function delete(Request $request, Book $book, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $book->getId(), $request->getPayload()->getString('_token'))) {

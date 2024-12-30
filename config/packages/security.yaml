@@ -9,7 +9,7 @@ security:
                 class: App\Entity\User
     firewalls:
         main:
-            pattern: ^/admin
+            pattern: ^/
             provider: app_user_provider
             form_login:
                 login_path: admin_login

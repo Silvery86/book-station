@@ -78,12 +78,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user')]
     private Collection $comments;
 
+    #[ORM\OneToMany(targetEntity: AccessSession::class, mappedBy: 'user')]
+    private Collection $accessSessions;
+
     public function __construct()
     {
         $this->rating = new ArrayCollection();
         $this->order = new ArrayCollection();
         $this->wishlist = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->accessSessions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -259,5 +263,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return $this->email;
+    }
+
+    /**
+     * @return Collection<int, UserSession>
+     */
+    public function getUserSessions(): Collection
+    {
+        return $this->userSessions;
+    }
+
+    public function addAccessSession(AccessSession $accessSessions): static
+    {
+        if (!$this->accessSessions->contains($accessSessions)) {
+            $this->accessSessions->add($accessSessions);
+            $accessSessions->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAccessSession(AccessSession $accessSessions): static
+    {
+        if ($this->accessSessions->removeElement($accessSessions)) {
+            // set the owning side to null (unless already changed)
+            if ($accessSessions->getUser() === $this) {
+                $accessSessions->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

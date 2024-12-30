@@ -1,0 +1,19 @@
+{{ form_start(form, { 'attr': { 'class': 'custom-form' } }) }}
+    {% for field in form %}
+        <div class="form-group">
+            {% if field.vars.name != '_token' %}
+                {{ form_label(field, null, { 'label_attr': { 'class': 'form-label' } }) }}
+            {% endif %}
+            {{ form_widget(field, { 'attr': { 'class': 'form-control' } }) }}
+            {{ form_errors(field) }}
+        </div>
+    {% endfor %}
+<div class="d-flex justify-content-start mt-3 align-items-center">
+    <a class="btn btn-primary mr-2" href="{{ path('admin_category_index') }}"><i
+                class="fa-solid fa-square-caret-left me-2"></i>Back To List</a>
+
+    <button class="btn btn-success mx-2"><i
+                class="fa-regular fa-floppy-disk me-2"></i>{{ button_label|default('Create') }}</button>
+
+</div>
+{{ form_end(form) }}
