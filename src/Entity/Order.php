@@ -40,13 +40,13 @@ class Order
     private ?\DateTimeInterface $updatedAt = null;
 
 
-    #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderBillingInfo::class)]
+    #[ORM\OneToMany(targetEntity: OrderBillingInfo::class, mappedBy: 'order')]
     private Collection $orderBillingInfo;
 
-    #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderItem::class)]
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'order')]
     private Collection $orderItems;
 
-    #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderTracking::class)]
+    #[ORM\OneToMany(targetEntity: OrderTracking::class, mappedBy: 'order')]
     private Collection $orderTrackings;
 
     public function __construct()
