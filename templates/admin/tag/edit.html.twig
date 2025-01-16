@@ -1,0 +1,16 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Edit tag
+{% endblock %}
+
+{% block body %}
+    <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <h1>Edit tag</h1>
+            {{ include('admin/tag/_form.html.twig', {'button_label': 'Update'}) }}
+            <div class="d-flex justify-content-start align-items-center mt-2">
+                {{ include('admin/tag/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
