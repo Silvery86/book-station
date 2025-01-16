@@ -2,18 +2,27 @@
 
 namespace App\Controller;
 
+use App\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class PageController extends AbstractController
 {
+    private BookRepository $bookRepository;
+    public function __construct(BookRepository $bookRepository)
+    {
+        $this->bookRepository = $bookRepository;
+    }
+
     #[Route('/shop', name: 'app_shop')]
     public function shop(): Response
     {
+        $books = $this->bookRepository->findAll();
         $title = 'Shop Page';
         return $this->render('page/shop.html.twig', [
-            'title' => $title
+            'title' => $title,
+            'books' => $books
         ]);
     }
 
